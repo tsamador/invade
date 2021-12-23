@@ -3,3 +3,6 @@
 *.ilk
 *.obj
 *.pdb
+*.db
+*.ipch
+build/.vs/gl_invade/v16/.suo
