@@ -9,8 +9,6 @@ struct Entity
     float xOffset;
     float yOffset;
     bool alive;
-
-
 };
 
 #endif

@@ -51,10 +51,18 @@ void Render(game_state* gameState)
     glClear(GL_COLOR_BUFFER_BIT);
 
     gameState->shader->use();
-    //gameState->shader->setUniFloat("yOffset", gameState->ship->yOffset);
-    //gameState->shader->setUniFloat("xOffset", gameState->ship->xOffset);
+    gameState->shader->setUniFloat("yOffset", gameState->ship->yOffset);
+    gameState->shader->setUniFloat("xOffset", gameState->ship->xOffset);
     glBindVertexArray(gameState->ship->VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glBindVertexArray(gameState->EnemyVAO);
+    for(int i = 0; i < 10; i ++)
+    {
+        gameState->shader->setUniFloat("yOffset", gameState->enemies[i].yOffset);
+        gameState->shader->setUniFloat("xOffset", gameState->enemies[i].xOffset);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+    }
 
     glfwSwapBuffers(window);
     glfwPollEvents();

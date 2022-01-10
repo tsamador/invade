@@ -2,13 +2,11 @@
 #define GAME_STATE_H
 
 #include "SpaceShip.h"
+#include "Enemy.h"
+#include "invade_inputs.h"
 
-struct invade_inputs
-{
-    bool left;
-    bool right;
-    bool space;
-};
+//TODO(Tanner): May want to rethink how this is defined or gets passed in.
+const int NumberOfEnemies = 10; 
 
 struct game_state
 {
@@ -16,6 +14,8 @@ struct game_state
     invade_inputs input;
     ShaderLoader* shader;
     SpaceShip* ship;
+    Enemy enemies[NumberOfEnemies];
+    int EnemyVAO;
 
 };
 

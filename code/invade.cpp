@@ -1,11 +1,9 @@
 
 #include "invade.h"
-#include "gl_invade.h"
+
 
 game_state gameState;
 ShaderLoader shader;
-
-static SpaceShip* InitSpaceShip();
 
 void InvadeMainLoop()
 {
@@ -31,10 +29,19 @@ void InitGameState()
     gameState.shader = &shader;
     gameState.ship = InitSpaceShip();
 
+    InitEnemyShips();
+
 }
 
 void UpdateEntities(game_state* gameState)
 {
+    gameState->ship->Update(gameState->input);
+
+    //TODO(Tanner): Stop using 10 as a literal here
+    for(int i = 0; i < 10; i ++)
+    {
+        gameState->enemies[i].Update();
+    }
 
 }
 
@@ -44,14 +51,44 @@ static SpaceShip* InitSpaceShip()
 
     float vertices[] =  {
         //Vertices              //Colors            //TODO(Texture Coordinates)
-        -0.01f, 0.0f, 0.0f,     0.0f, 0.0f, 1.0f, //bottom left
-        0.0f, 0.01f, 0.0f,      0.0f, 0.0f, 1.0f, //Top
-        0.01f, 0.0f, 0.0f,      0.0f, 0.0f, 1.0f  //bottom right
+        -0.05f, 0.0f, 0.0f,     0.0f, 0.0f, 1.0f, //bottom left
+        0.0f, 0.05f, 0.0f,      0.0f, 0.0f, 1.0f, //Top
+        0.05f, 0.0f, 0.0f,      0.0f, 0.0f, 1.0f  //bottom right
     };
     
     ship->VAO = CreateVAO(vertices, sizeof(vertices));
+    ship->alive = true;
+    ship->xOffset = 0.0f;
+    ship->yOffset = -0.8f;
 
     return ship;
+}
+
+static void InitEnemyShips()
+{
+    
+    gameState.enemies[0].direction = Direction::RIGHT;
+
+
+    //TODO(Tanner): May want to the enemies to be squares??? Will need to refactor CreateVAO
+    float vertices[] = {
+        //Vertices              //Colors            //TODO(Texture Coordinates)
+        -0.05f, 0.0f, 0.0f,     1.0f, 0.0f, 0.0f, //bottom left
+        0.0f, 0.05f, 0.0f,      1.0f, 0.0f, 0.0f, //Top
+        0.05f, 0.0f, 0.0f,      1.0f, 0.0f, 0.0f  //bottom right
+    };
+
+    gameState.EnemyVAO = CreateVAO(vertices, sizeof(vertices));
+
+    float xStart = -0.9f;
+    for(int i = 0; i < 10; i++)
+    {
+        gameState.enemies[i].alive = true;
+        gameState.enemies[i].yOffset = 0.90f;
+        gameState.enemies[i].xOffset = xStart;
+        xStart += 0.18f;
+    }
+
 }
 
 
