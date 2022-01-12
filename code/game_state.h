@@ -14,9 +14,8 @@ struct game_state
     invade_inputs input;
     ShaderLoader* shader;
     SpaceShip* ship;
-    Enemy enemies[NumberOfEnemies];
+    EnemyArray enemies;
     int EnemyVAO;
-
 };
 
 #endif

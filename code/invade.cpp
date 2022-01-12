@@ -40,7 +40,7 @@ void UpdateEntities(game_state* gameState)
     //TODO(Tanner): Stop using 10 as a literal here
     for(int i = 0; i < 10; i ++)
     {
-        gameState->enemies[i].Update();
+        gameState->enemies.UpdateAll();
     }
 
 }
@@ -66,9 +66,6 @@ static SpaceShip* InitSpaceShip()
 
 static void InitEnemyShips()
 {
-    
-    gameState.enemies[0].direction = Direction::RIGHT;
-
 
     //TODO(Tanner): May want to the enemies to be squares??? Will need to refactor CreateVAO
     float vertices[] = {
@@ -83,9 +80,9 @@ static void InitEnemyShips()
     float xStart = -0.9f;
     for(int i = 0; i < 10; i++)
     {
-        gameState.enemies[i].alive = true;
-        gameState.enemies[i].yOffset = 0.90f;
-        gameState.enemies[i].xOffset = xStart;
+        gameState.enemies.enemies[i].alive = true;
+        gameState.enemies.enemies[i].yOffset = 0.90f;
+        gameState.enemies.enemies[i].xOffset = xStart;
         xStart += 0.18f;
     }
 

@@ -18,7 +18,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     //Create Our window
-    window = glfwCreateWindow(800,800, "Invade",0,0);
+    window = glfwCreateWindow(1200,1200, "Invade",0,0);
 
     if(!window)
     {
@@ -59,8 +59,8 @@ void Render(game_state* gameState)
     glBindVertexArray(gameState->EnemyVAO);
     for(int i = 0; i < 10; i ++)
     {
-        gameState->shader->setUniFloat("yOffset", gameState->enemies[i].yOffset);
-        gameState->shader->setUniFloat("xOffset", gameState->enemies[i].xOffset);
+        gameState->shader->setUniFloat("yOffset", gameState->enemies.enemies[i].yOffset);
+        gameState->shader->setUniFloat("xOffset", gameState->enemies.enemies[i].xOffset);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
 
