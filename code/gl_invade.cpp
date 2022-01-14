@@ -68,7 +68,6 @@ void Render(game_state* gameState)
     glfwPollEvents();
 }
 
-
 void ProcessInput(game_state* gameState)
 {
     gameState->input = {};

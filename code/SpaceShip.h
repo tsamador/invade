@@ -15,12 +15,13 @@ struct Bullet {
 struct SpaceShip : Entity
 {
     Bullet bullets[2];
+
     SpaceShip()
     {
 
     }
 
-    void Update(invade_inputs inputs)
+    void Update(invade_inputs& inputs)
     {
         if(inputs.left)
         {
@@ -31,7 +32,7 @@ struct SpaceShip : Entity
             }
             
         }
-        
+
         if(inputs.right)
         {
             if(xOffset < 0.95f)
@@ -43,13 +44,15 @@ struct SpaceShip : Entity
 
         if(inputs.space)
         {
+            inputs.space = false;
             Shoot();    
         }
     }
 
     void Shoot()
     {
-
+        
+        puts("Shoot!");
     }
 };
 #endif
