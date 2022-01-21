@@ -3,10 +3,13 @@
 
 
 bool running = true;
+glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 800.0f, 0.0f, 0.0f);
+
 GLFWwindow* window;
 
 void frameBufferSizeCallback(GLFWwindow* window, int width, int height)
 {
+    projection = glm::ortho(0.0f, (float)width, 0.0f, (float)height, 0.0f, 0.0f);
     glViewport(0,0, width, height);
 }
 
@@ -18,7 +21,8 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     //Create Our window
-    window = glfwCreateWindow(1200,1200, "Invade",0,0);
+    window = glfwCreateWindow(800,800, "Invade",0,0);
+
 
     if(!window)
     {
@@ -43,9 +47,9 @@ int main()
 
 }
 
-//TODO(Tanner) Maybe pass this as a pointer??
 void Render(game_state* gameState)
 {
+    gameState->shader->setUniMat4("projection", projection);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);

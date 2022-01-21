@@ -7,6 +7,9 @@
 #include "stb_image.h"
 #include "game_state.h"
 #include "invade.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 void Render(game_state* gameState);
 void ProcessInput(game_state *gameState);

@@ -14,6 +14,9 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 struct ShaderLoader
 {
@@ -30,6 +33,7 @@ struct ShaderLoader
     void setUniBool(const std::string &name, bool value) const;
     void setUniInt(const std::string &name, int value) const;
     void setUniFloat(const std::string &name, float value) const;
+    void ShaderLoader::setUniMat4(const std::string & name, glm::mat4 value) const;
 };
  
 
