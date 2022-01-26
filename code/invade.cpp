@@ -51,9 +51,9 @@ static SpaceShip* InitSpaceShip()
 
     float vertices[] =  {
         //Vertices              //Colors            //TODO(Texture Coordinates)
-        -0.5f, 0.0f, 0.0f,     0.0f, 0.0f, 1.0f, //bottom left
-        0.0f, 0.5f, 0.0f,      0.0f, 0.0f, 1.0f, //Top
-        0.5f, 0.0f, 0.0f,      0.0f, 0.0f, 1.0f  //bottom right
+        -0.05f, 0.0f, 0.0f,     0.0f, 0.0f, 1.0f, //bottom left
+        0.0f, 0.05f, 0.0f,      0.0f, 0.0f, 1.0f, //Top
+        0.05f, 0.0f, 0.0f,      0.0f, 0.0f, 1.0f  //bottom right
     };
     
     ship->VAO = CreateVAO(vertices, sizeof(vertices));
