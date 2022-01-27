@@ -11,6 +11,8 @@ const int NumberOfEnemies = 10;
 struct game_state
 {
     bool active;
+    int screenHeight;
+    int screenWidth;
     invade_inputs input;
     ShaderLoader* shader;
     SpaceShip* ship;

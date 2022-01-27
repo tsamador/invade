@@ -9,6 +9,8 @@ enum Direction {
         RIGHT
 };
 
+
+//TODO(Tanner): I kind of feel like i want to rework this entire enemy system :(
 struct Enemy : Entity {
     static Direction direction;
     void SetLocation(float x, float y);
@@ -18,7 +20,6 @@ struct Enemy : Entity {
 struct EnemyArray {
     const int NUM_ENEMIES = 10;
     Enemy enemies[10];
-
     void UpdateAll();
 
 };

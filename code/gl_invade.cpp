@@ -1,13 +1,14 @@
 
 #include "gl_invade.h"
 
-
-
 GLFWwindow* window;
+glm::mat4 projection;
 
 void frameBufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     glViewport(0,0, width, height);
+    UpdateGameStateWindow(width, height);
+    glm::mat4 projection = glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1.0f, 1.0f);  
 }
 
 int main()
@@ -20,6 +21,8 @@ int main()
     //Create Our window
     window = glfwCreateWindow(800,800, "Invade",0,0);
 
+    //Setup our projection matrix
+    projection = glm::ortho(0.0f, 800.0f, 800.0f, 0.0f, -1.0f, 1.0f);  
 
     if(!window)
     {
@@ -36,6 +39,7 @@ int main()
         return -1;
     }
 
+
     InvadeMainLoop();
 
     glfwTerminate();
@@ -46,25 +50,54 @@ int main()
 
 void Render(game_state* gameState)
 {
-    
+    /*TODO(Tanner): I don't really need to set this uniform every render call, 
+    only whenever the window changes. 
+    */
+    gameState->shader->setUniMat4("projection", projection);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    gameState->shader->use();
-    gameState->shader->setUniFloat("yOffset", gameState->ship->yOffset);
-    gameState->shader->setUniFloat("xOffset", gameState->ship->xOffset);
+
+    /* First, Render our ship */
+    glm::mat4 model = glm::mat4(1.0);
+    // First Translate
+
+    /*Note(Tanner): I was wondering what the advantage is for us
+    to create the matrix on the CPU as opposed to on the shader,but the
+    reason is we don't want to recompute this model matrix per vertex,
+    we would essentially at least triple the work per object.*/
+    model = glm::translate(model, gameState->ship->pos);
+
+    /* Now Rotate (Uneeded for this project)*/
+
+    /* Finally, Scale */
+    model = glm::scale(model, gameState->ship->size);
+
+    gameState->shader->use();    
+    gameState->shader->setUniMat4("model", model);
+
     glBindVertexArray(gameState->ship->VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
+
+    /* FINISHED DRAWING SHIP
+
+    /* Now Render our enemies */
     glBindVertexArray(gameState->EnemyVAO);
+
+    
+    Enemy* enemiesArr = gameState->enemies.enemies;
     for(int i = 0; i < 10; i ++)
     {
-        gameState->shader->setUniFloat("yOffset", gameState->enemies.enemies[i].yOffset);
-        gameState->shader->setUniFloat("xOffset", gameState->enemies.enemies[i].xOffset);
+        model = glm::mat4(1.0);
+        model = glm::translate(model, enemiesArr[i].pos);
+        model = glm::scale(model, enemiesArr[i].size);
+
+        gameState->shader->setUniMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
-
+    
     glfwSwapBuffers(window);
     glfwPollEvents();
 }
@@ -114,7 +147,7 @@ int CreateVAO(float* vertices, int verticesSize)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    //TODO(Tanner) add Texture coordinates to 
+    //TODO(Tanner) add Texture coordinates to This function
 
     return VAO;
 }

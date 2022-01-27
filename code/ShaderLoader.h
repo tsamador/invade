@@ -33,7 +33,8 @@ struct ShaderLoader
     void setUniBool(const std::string &name, bool value) const;
     void setUniInt(const std::string &name, int value) const;
     void setUniFloat(const std::string &name, float value) const;
-    void ShaderLoader::setUniMat4(const std::string & name, glm::mat4 value) const;
+    void setUniMat4(const std::string & name, glm::mat4 value) const;
+    void setUniVec2(const std::string & name, glm::vec2 value) const;
 };
  
 

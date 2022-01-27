@@ -7,3 +7,6 @@
 *.ipch
 build/.vs/gl_invade/v16/.suo
 .vscode/settings.json
+*.db-shm
+*.db-wal
+*.opendb

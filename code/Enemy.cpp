@@ -4,8 +4,8 @@ Direction Enemy::direction{RIGHT};
 
 void Enemy::SetLocation(float x, float y)
 {
-    xOffset = 0;
-    yOffset = 0;
+    pos.x = x;
+    pos.y = y;
 }
 
 bool Enemy::Update()
@@ -15,20 +15,20 @@ bool Enemy::Update()
     {
         case LEFT:
         {
-            xOffset -= 0.00001f;
+            pos.x -= 0.5f;
         } break;
         case RIGHT:
         {
-            xOffset += 0.00001f;
+            pos.x += 0.5f;
         } break;
     }
 
-    if (xOffset > 0.9f)
+    if (pos.x > 750)
     {
         direction = LEFT;
         return true;
     }
-    else if (xOffset < -0.9f)
+    else if (pos.x < 50)
     {
         direction = RIGHT;
         return true;
@@ -53,7 +53,7 @@ void EnemyArray::UpdateAll()
     {
         for(int i = 0; i < NUM_ENEMIES; i++)
         {
-            enemies[i].yOffset -= 0.01f;
+            enemies[i].pos.y += 5;
         }
     }
 }
