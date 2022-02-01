@@ -4,6 +4,9 @@
 #include "gl_invade.h"
 #include "game_state.h"
 #include "Enemy.h"
+#include <windows.h>
+#include <timeapi.h>
+#include "invade_types.h"
 
 void InvadeMainLoop();
 void InitGameState();

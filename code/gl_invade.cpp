@@ -84,6 +84,10 @@ void Render(game_state* gameState)
     /* FINISHED DRAWING SHIP */
 
     /* NOW RENDER SHIPS BULLETS */
+    int num_segments = 32;
+    int tempVAO = CreateCircleVAO( 0.25f, num_segments);
+    glBindVertexArray(tempVAO);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, (num_segments *2) +2);
 
     /* Now Render our enemies */
     glBindVertexArray(gameState->EnemyVAO);
@@ -183,7 +187,7 @@ int CreateCircleVAO(int radius, int num_segments)
     {
         float xNew = cosInc * xc - sinInc *yc;
         yc = sinInc * xc + cosInc * yc;
-        xc = xcNew;
+        xc = xNew;
 
         vertices[iVert++] = xc;
         vertices[iVert++] = yc;
@@ -192,16 +196,17 @@ int CreateCircleVAO(int radius, int num_segments)
     vertices[iVert++] = 1.0f;
     vertices[iVert++] = 0.0f;
 
-    int VBO, VAO;
+    unsigned int VBO, VAO;
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
     glGenBuffers(1, &VBO);
-    glBindBuffers(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, (num_segments + 2)* 2);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, (num_segments + 2)* 2, vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0)
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(0);
 
+    return VAO;
 }

@@ -2,13 +2,37 @@
 #include "invade.h"
 
 
+const int TARGET_FPS = 60;
+const int MS_PER_SECOND = 1000;
+const long int msPerFrame = MS_PER_SECOND/TARGET_FPS;
+
 game_state gameState;
 ShaderLoader shader;
 
+static inline u64 GetPerfFrequency()
+{
+    LARGE_INTEGER frequency;
+    QueryPerformanceFrequency(&frequency);
+    return frequency.QuadPart;
+}
+
+static inline u64 GetWallClock()
+{
+    LARGE_INTEGER wallClock;
+    QueryPerformanceCounter(&wallClock);
+    return wallClock.QuadPart;
+}
+
 void InvadeMainLoop()
 {
-
+    timeBeginPeriod(1); //Set the windows sleep granularity to 1 msa
+    
     InitGameState();
+
+    u64 startFrame, deltaFrame;
+    u64 perfFrequency = GetPerfFrequency();
+    startFrame = GetWallClock();
+
 
     while(gameState.active)
     {
@@ -17,6 +41,22 @@ void InvadeMainLoop()
         UpdateEntities(&gameState);
 
         Render(&gameState);
+        
+        deltaFrame = GetWallClock() - startFrame;
+        u64 timeElapsed = deltaFrame/(perfFrequency/MS_PER_SECOND);
+
+        if(timeElapsed < msPerFrame)
+        {
+            //Todo(Tanner):Sleep is Pretty bad, but we will use it here for now
+            Sleep(msPerFrame - timeElapsed);
+        }
+        
+       
+        deltaFrame = GetWallClock() - startFrame;
+        timeElapsed = deltaFrame/(perfFrequency/MS_PER_SECOND);
+        f64 FPS = (f64)perfFrequency/deltaFrame;
+        printf("Main Loop Time elapsed: %d\nFPS: %f \n", timeElapsed, FPS);
+        startFrame = GetWallClock(); 
     }
 
 }

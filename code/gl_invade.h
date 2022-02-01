@@ -17,6 +17,6 @@
 void Render(game_state* gameState);
 void ProcessInput(game_state *gameState);
 int CreateVAO(float* vertices, int verticesSize);
-void DrawCircle(float cx, float cy, float r, int num_segments);
+int CreateCircleVAO(int radius, int num_segments);
 
 #endif
