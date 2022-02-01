@@ -26,11 +26,13 @@ bool Enemy::Update()
     if (pos.x > 750)
     {
         direction = LEFT;
+        pos.x -= 0.5f;
         return true;
     }
     else if (pos.x < 50)
     {
         direction = RIGHT;
+        pos.x += 0.5f;
         return true;
     }
 

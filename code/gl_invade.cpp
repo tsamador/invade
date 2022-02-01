@@ -16,7 +16,7 @@ int main()
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     //Create Our window
     window = glfwCreateWindow(800,800, "Invade",0,0);
@@ -80,8 +80,10 @@ void Render(game_state* gameState)
     glBindVertexArray(gameState->ship->VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
+    
+    /* FINISHED DRAWING SHIP */
 
-    /* FINISHED DRAWING SHIP
+    /* NOW RENDER SHIPS BULLETS */
 
     /* Now Render our enemies */
     glBindVertexArray(gameState->EnemyVAO);
@@ -152,6 +154,54 @@ int CreateVAO(float* vertices, int verticesSize)
     return VAO;
 }
 
+int CreateCircleVAO(int radius, int num_segments)
+{
 
+    /* Create our VBO */
+    //Will use a triangle fan rooted at the origin
+    float* vertices = new float[(num_segments + 2) * 2];
 
+    //origin
+    unsigned int iVert = 0;
+    vertices[iVert++] = 0.0f;
+    vertices[iVert++] = 0.0f;
 
+    //Calculate angle incrememnt from point to point
+    float angInc = 2.0f * PI / (float) num_segments;
+    float cosInc = cos(angInc);
+    float sinInc = sin(angInc);
+
+    //Start with a vector (1.0f, 0.0f);
+    vertices[iVert++] = 1.0f;
+    vertices[iVert++] = 0.0f;
+
+    // And then rotate by angInx for each point
+    float xc = 1.0f;
+    float yc = 0.0f;
+
+    for(int i = 1; i < num_segments; i++)
+    {
+        float xNew = cosInc * xc - sinInc *yc;
+        yc = sinInc * xc + cosInc * yc;
+        xc = xcNew;
+
+        vertices[iVert++] = xc;
+        vertices[iVert++] = yc;
+    }
+
+    vertices[iVert++] = 1.0f;
+    vertices[iVert++] = 0.0f;
+
+    int VBO, VAO;
+
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    glGenBuffers(1, &VBO);
+    glBindBuffers(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, (num_segments + 2)* 2);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0)
+    glEnableVertexAttribArray(0);
+
+}

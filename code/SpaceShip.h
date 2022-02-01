@@ -16,6 +16,7 @@ struct Bullet {
 
 struct SpaceShip : Entity
 {
+    int bulletVAO;
     Bullet bullets[2];
 
     void Init(int screenWidth, int screenHeight)

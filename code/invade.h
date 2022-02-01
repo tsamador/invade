@@ -11,4 +11,6 @@ void UpdateEntities(game_state* gameState);
 static SpaceShip* InitSpaceShip();
 static void InitEnemyShips();
 void UpdateGameStateWindow(int width, int height);
+static void InitBullets();
+
 #endif

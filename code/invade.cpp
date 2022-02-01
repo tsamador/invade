@@ -31,6 +31,7 @@ void InitGameState()
     gameState.shader = &shader;
     gameState.ship = InitSpaceShip();
 
+    InitBullets();
 
     InitEnemyShips();
 
@@ -61,6 +62,7 @@ static SpaceShip* InitSpaceShip()
     
     ship->VAO = CreateVAO(vertices, sizeof(vertices));
     ship->alive = true;
+    
 
     return ship;
 }
@@ -88,6 +90,19 @@ static void InitEnemyShips()
         gameState.enemies.enemies[i].pos.x = xStart;
         xStart += 60;
     }
+
+}
+
+static void InitBullets()
+{
+    float vertices[] = {
+        5.0f, 0.0f, 0.0f,    0.0f, 1.0f, 0.0f, // Top
+        0.0f, 20.0f, 0.0f,    0.0f, 1.0f, 0.0f, // bottom left 
+        10.0f, 20.0f, 0.0f,   0.0f, 1.0f, 0.0f, // bottom right
+    };
+
+    gameState.ship->bulletVAO = CreateVAO(vertices, sizeof(vertices));
+    
 
 }
 

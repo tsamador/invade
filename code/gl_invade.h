@@ -11,9 +11,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#define PI 3.1415926
+
 
 void Render(game_state* gameState);
 void ProcessInput(game_state *gameState);
 int CreateVAO(float* vertices, int verticesSize);
+void DrawCircle(float cx, float cy, float r, int num_segments);
 
 #endif
