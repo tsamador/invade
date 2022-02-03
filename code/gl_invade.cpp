@@ -84,10 +84,10 @@ void Render(game_state* gameState)
     /* FINISHED DRAWING SHIP */
 
     /* NOW RENDER SHIPS BULLETS */
-    int num_segments = 32;
-    int tempVAO = CreateCircleVAO( 0.25f, num_segments);
-    glBindVertexArray(tempVAO);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, (num_segments *2) +2);
+    gameState->shader->setUniMat4("model", glm::mat4(1.0f));
+
+    glBindVertexArray(gameState->ship->bulletVAO);
+    glDrawElements(GL_TRIANGLES,6, GL_UNSIGNED_INT, 0);
 
     /* Now Render our enemies */
     glBindVertexArray(gameState->EnemyVAO);
@@ -157,56 +157,31 @@ int CreateVAO(float* vertices, int verticesSize)
 
     return VAO;
 }
-
-int CreateCircleVAO(int radius, int num_segments)
+//Similar to above but creates a VAO besed upon vertices and indices
+int CreateIndicesVAO(float* vertices, int verticesSize, unsigned int* indices, int indicesSize)
 {
-
-    /* Create our VBO */
-    //Will use a triangle fan rooted at the origin
-    float* vertices = new float[(num_segments + 2) * 2];
-
-    //origin
-    unsigned int iVert = 0;
-    vertices[iVert++] = 0.0f;
-    vertices[iVert++] = 0.0f;
-
-    //Calculate angle incrememnt from point to point
-    float angInc = 2.0f * PI / (float) num_segments;
-    float cosInc = cos(angInc);
-    float sinInc = sin(angInc);
-
-    //Start with a vector (1.0f, 0.0f);
-    vertices[iVert++] = 1.0f;
-    vertices[iVert++] = 0.0f;
-
-    // And then rotate by angInx for each point
-    float xc = 1.0f;
-    float yc = 0.0f;
-
-    for(int i = 1; i < num_segments; i++)
-    {
-        float xNew = cosInc * xc - sinInc *yc;
-        yc = sinInc * xc + cosInc * yc;
-        xc = xNew;
-
-        vertices[iVert++] = xc;
-        vertices[iVert++] = yc;
-    }
-
-    vertices[iVert++] = 1.0f;
-    vertices[iVert++] = 0.0f;
-
-    unsigned int VBO, VAO;
+    //set up our vertex buffers
+    unsigned int VBO, VAO, EBO;
 
     glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
     glBindVertexArray(VAO);
 
-    glGenBuffers(1, &VBO);
+    //Create our buffer on the GPU and Send our vertices to it.
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, (num_segments + 2)* 2, vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, verticesSize, vertices,  GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    //Create our buffer on the GPU and send our indices to it.
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     return VAO;
 }

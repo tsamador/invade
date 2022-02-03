@@ -1,5 +1,7 @@
 #include "Enemy.h"
 
+const float ENEMY_HORIZ_SPEED = 0.125f;
+
 Direction Enemy::direction{RIGHT};
 
 void Enemy::SetLocation(float x, float y)
@@ -15,24 +17,24 @@ bool Enemy::Update()
     {
         case LEFT:
         {
-            pos.x -= 0.5f;
+            pos.x -= ENEMY_HORIZ_SPEED;
         } break;
         case RIGHT:
         {
-            pos.x += 0.5f;
+            pos.x += ENEMY_HORIZ_SPEED;
         } break;
     }
 
     if (pos.x > 750)
     {
         direction = LEFT;
-        pos.x -= 0.5f;
+        pos.x -= ENEMY_HORIZ_SPEED;
         return true;
     }
     else if (pos.x < 50)
     {
         direction = RIGHT;
-        pos.x += 0.5f;
+        pos.x += ENEMY_HORIZ_SPEED;
         return true;
     }
 

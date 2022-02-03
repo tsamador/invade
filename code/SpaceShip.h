@@ -7,11 +7,21 @@
 
 #define SPEED 5;
 
-struct Bullet {
-    float xOffset;
-    float yOffset;
+struct Bullet : Entity {    
     float radius;
-    bool active;
+
+    void Init()
+    {
+        //Bullets Start offScreen
+        pos.x = -10;
+        pos.y = -10;
+        alive = false;
+    }
+
+    void ShootBullet()
+    {
+
+    }
 };
 
 struct SpaceShip : Entity
@@ -46,11 +56,12 @@ struct SpaceShip : Entity
             inputs.space = false;
             Shoot();    
         }
+
+
     }
 
     void Shoot()
-    {
-        
+    {  
         puts("Shoot!");
     }
 };

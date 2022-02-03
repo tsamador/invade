@@ -48,6 +48,7 @@ void InvadeMainLoop()
         if(timeElapsed < msPerFrame)
         {
             //Todo(Tanner):Sleep is Pretty bad, but we will use it here for now
+            //In conjunction with timeBeginPeriod it is not as terrible.
             Sleep(msPerFrame - timeElapsed);
         }
         
@@ -59,6 +60,7 @@ void InvadeMainLoop()
         startFrame = GetWallClock(); 
     }
 
+    timeBeginPeriod(1);
 }
 
 void InitGameState()
@@ -136,14 +138,18 @@ static void InitEnemyShips()
 static void InitBullets()
 {
     float vertices[] = {
-        5.0f, 0.0f, 0.0f,    0.0f, 1.0f, 0.0f, // Top
-        0.0f, 20.0f, 0.0f,    0.0f, 1.0f, 0.0f, // bottom left 
-        10.0f, 20.0f, 0.0f,   0.0f, 1.0f, 0.0f, // bottom right
+        5.0f, 5.0f, 0.0f,    0.0f, 1.0f, 0.0f, // Top left
+        5.0f, -5.0f, 0.0f,    0.0f, 1.0f, 0.0f, // bottom right 
+        -5.0f, -5.0f, 0.0f,   0.0f, 1.0f, 0.0f, // bottom left
+        -5.0f, 5.0f, 0.0f,    0.0f, 1.0f, 0.0f  // top left
     };
 
-    gameState.ship->bulletVAO = CreateVAO(vertices, sizeof(vertices));
-    
+    unsigned int indices[] = {
+        0 , 1, 3,
+        1, 2, 3
+    };
 
+    gameState.ship->bulletVAO = CreateIndicesVAO(vertices, sizeof(vertices), indices, sizeof(indices));
 }
 
 void UpdateGameStateWindow(int width, int height)

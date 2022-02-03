@@ -18,5 +18,6 @@ void Render(game_state* gameState);
 void ProcessInput(game_state *gameState);
 int CreateVAO(float* vertices, int verticesSize);
 int CreateCircleVAO(int radius, int num_segments);
+int CreateIndicesVAO(float* vertices, int verticesSize, unsigned int* indices, int indicesSize);
 
 #endif
